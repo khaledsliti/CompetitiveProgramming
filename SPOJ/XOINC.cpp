@@ -60,5 +60,5 @@ int main()
     }
   }
   printf("%d\n", (dp[1][2] + get(1, n)) / 2);
-	return 0;
+  return 0;
 }
