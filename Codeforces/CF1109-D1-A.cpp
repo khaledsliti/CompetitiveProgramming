@@ -1,5 +1,8 @@
-/*
+/********************************************************************************************************
   Author: RedStone
+
+  Problem link:
+    https://codeforces.com/contest/1109/problem/A
 
   Idea:
     The main idea is that if we have an array A of N elements such that A[0] ^ ... ^ A[N] = 0 and N is even
@@ -8,8 +11,10 @@
     So, the problem becames: Find the number of sub-arrays such that the XOR of all elements is zero.
     Since we are looking for sub-arrays with even length we must use two prefix arrays, one for even indexes and other for odd ones.
 
-  Compexity: O(N)
-*/
+  Compexity:
+    Time: O(N)
+    Memory: 
+********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
 #define f first

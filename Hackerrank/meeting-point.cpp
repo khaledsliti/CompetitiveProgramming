@@ -1,6 +1,9 @@
 /*
   Author: RedStone
 
+  Problem link:
+    https://www.hackerrank.com/challenges/meeting-point/problem
+
   Idea:
     The main idea is to transform coordinates from (x, y) => (x - y, x + y) = (u, v)
     After this, the Chebyshev distance:
@@ -22,7 +25,9 @@
       So, Sum[ abs(x - x_i) ] = R - (N - cnt) * x + cnt * x - L, where cnt is the number of x_i less than or equal to x
       And we do the same thing for Sum[ abs(y - y_i) ]
 
-  Compexity: O(N log(N))
+  Compexity:
+    Time: O(N log(N))
+    Memory: O(N)
 */
 #include <bits/stdc++.h>
 using namespace std;
