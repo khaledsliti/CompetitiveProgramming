@@ -2,25 +2,25 @@
   Author: RedStone
 
   Problem link:
-  	https://codeforces.com/contest/834/problem/D
+    https://codeforces.com/contest/834/problem/D
 
   Idea:
-  	In this problem, we need to divide the array into K segment with maximum sum of scores.
-  	The score of a segment is the number of distinct elements inside it.
-  	We can solve the problem using a dp approach.
-  	Let's dp[i][j] be the optimal solution for elements from 1 to j using i segments.
-  	We can easily see that dp[1][j] is the number of distinct elements from 1 to j.
-		dp[i][j] = Max( dp[i - 1][k - 1] + dist(k, j) ) for all k from 1 to j, where dist(a, b) is the number of distinct elements from a to b.
-		Now, we can calculate this easily in O(N * N * K) but this will give TLE.
-		So, to reduce the time complexity of this solution we will use a segment tree for each i to calculate Max( dp[i - 1][k - 1] + dist(k, j) ).
-		Let's start by storing dp[i - 1] in the segment tree. dp[i][0] = inf.
-		For each j between 1 and N, we add 1 to the range from the last occurrence of arr[j] and j - 1,
-		because dist(k, j) increase by 1 for each k in this range.
-		Finally, we must get the max using the segment tree to calculate dp[i][j].
+    In this problem, we need to divide the array into K segment with maximum sum of scores.
+    The score of a segment is the number of distinct elements inside it.
+    We can solve the problem using a dp approach.
+    Let's dp[i][j] be the optimal solution for elements from 1 to j using i segments.
+    We can easily see that dp[1][j] is the number of distinct elements from 1 to j.
+    dp[i][j] = Max( dp[i - 1][k - 1] + dist(k, j) ) for all k from 1 to j, where dist(a, b) is the number of distinct elements from a to b.
+    Now, we can calculate this easily in O(N * N * K) but this will give TLE.
+    So, to reduce the time complexity of this solution we will use a segment tree for each i to calculate Max( dp[i - 1][k - 1] + dist(k, j) ).
+    Let's start by storing dp[i - 1] in the segment tree. dp[i][0] = inf.
+    For each j between 1 and N, we add 1 to the range from the last occurrence of arr[j] and j - 1,
+    because dist(k, j) increase by 1 for each k in this range.
+    Finally, we must get the max using the segment tree to calculate dp[i][j].
 
   Compexity:
-  	Time: O(N * K * log(N))
-  	Memory: O(N * K * log(N))
+    Time: O(N * K * log(N))
+    Memory: O(N * K * log(N))
 ********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
