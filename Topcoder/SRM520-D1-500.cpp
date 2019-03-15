@@ -1,21 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int mod = 1e9 + 7;
+const int T = 2e5 + 1;
+const int N = 21;
+
+int cnt[(1 << 3)][4][T];
+int pref_cnt[4][T];
+int dp[N][T];
 
 class SRMIntermissionPhase
 {
-  const int mod = 1e9 + 7;
 public:
   int countWays(vector<int> points, vector<string> description){
+    reverse(description.begin(), description.end());
     int n = (int)description.size();
     assert(points.size() == 3 && n >= 1);
     int total = points[0] + points[1] + points[2];
-    int cnt[(1 << 3)][4][total + 1];
-    int pref_cnt[4][total + 1];
-    for(int i = 0 ; i < 4 ; i++)
-      for(int j = 0 ; j <= total ; j++)
-        cnt[0][i][j] = 0;
-    // for each mask, calculate the number of ways to form j points using problems of this mask
-    for(int mask = 1 ; mask < (1 << 3) ; mask++){
+    for(int mask = 0 ; mask < (1 << 3) ; mask++){
       for(int j = 0 ; j <= total ; j++){
         cnt[mask][0][j] = j == 0;
         pref_cnt[0][j] = 1;
@@ -40,25 +41,20 @@ public:
         }
       }
     }
-    int dp[n + 1][total + 1];
     for(int j = 0 ; j <= total ; j++)
-      dp[0][j] = j == 0;
+      dp[0][j] = 1;
     for(int i = 1 ; i <= n ; i++){
       int mask = 0;
       for(int k = 0 ; k < 3 ; k++)
         if(description[i - 1][k] == 'Y')
           mask |= (1 << k);
+      dp[i][0] = mask == 0 && i == 1;
       for(int j = 1 ; j <= total ; j++){
-        dp[i][j] = 0;
-        if(j > 0){
-          dp[i][j] = dp[i][j - 1];
-          dp[i][j] = (dp[i][j] + 1LL * cnt[mask][3][j] * dp[i - 1][j - 1]) % mod;
-        }
+        dp[i][j] = dp[i][j - 1];
+        dp[i][j] = (dp[i][j] + 1LL * cnt[mask][3][j] * dp[i - 1][j - 1]) % mod;
       }
     }
-    return dp[n][total];
+    return  (dp[n][total] + mod) % mod;
   }
 };
-
-
 
