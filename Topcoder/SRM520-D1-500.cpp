@@ -57,7 +57,7 @@ public:
       }
     }
     return dp[n][total];
-	}
+  }
 };
 
 
