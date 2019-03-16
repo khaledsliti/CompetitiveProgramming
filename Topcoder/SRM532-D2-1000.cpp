@@ -5,6 +5,20 @@
     https://community.topcoder.com/stat?c=problem_statement&pm=11765&rd=14725
 
   Idea:
+    The main idea is that we are going to process of the rows of the grid one by one from top to bottom.
+    In each row, we try all possible configurations and check for each configuration if the previous configuration (the config of the previous row)
+    still valid (that means all cells filled with 1 in the previous row should have even number of colored neighbors)
+    For each row we must have two parameters so that we can calculate the result. The first one is the positions of colored cells in the previous row.
+    The second is the position of colored cell that have odd number of colored neighbors.
+    To avoid using a lot of memory we will use an integer to represent these two informations. It is the second parameters (prev_rep) of solve funtion.
+    It contains all necessary informations of the previous row.
+    We will assign a value for each column as follow
+      - 0 if the current column contains an uncolored cell.
+      - 1 if the current column contains a colored cell and has even number of colored neighbors so far.
+      - 2 if the current column contains a colored cell and has odd number of colored neighbors so far.
+    So, 0 <= prev_rep < 3^M.
+    To decrease the time complexity of the function solve, we can precalculate the representation of all possible case between two rows
+    using a dynamic programming solution.
 
   Compexity:
     Time: O(4^M * M + 6^M * N)
