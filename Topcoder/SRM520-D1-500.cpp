@@ -1,3 +1,13 @@
+/********************************************************************************************************
+  Author: RedStone
+
+  Idea:
+
+  Compexity:
+    Time: O(2^P * P * )
+    Memory: 
+********************************************************************************************************/
+
 #include <bits/stdc++.h>
 using namespace std;
 const int mod = 1e9 + 7;
@@ -34,7 +44,7 @@ public:
           }else{
             cnt[mask][i][j] = 0;
           }
-          cnt[mask][i][j] %= mod;
+          cnt[mask][i][j] = (cnt[mask][i][j] % mod + mod) % mod;
           pref_cnt[i][j] = cnt[mask][i][j];
           if(j > 0)
             pref_cnt[i][j] = (pref_cnt[i][j] + pref_cnt[i][j - 1]) % mod;
