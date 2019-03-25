@@ -5,8 +5,7 @@ const int mod = 1e9 + 7;
 
 int n, e;
 vector<int> g[N];
-int has_leaf[N];
-int head[N], nxt[N], to[N], fr[N];
+int head[N], nxt[N], to[N];
 int dp[N][2];
 
 void init(){
@@ -17,26 +16,18 @@ void init(){
 void addEdge(int f, int t){
 	nxt[e] = head[f];
 	head[f] = e;
-	fr[e] = f;
 	to[e++] = t;
 }
 
-bool DFS(int u, int p){
-	has_leaf[u] = 0;
+void DFS(int u, int p){
 	int len = g[u].size();
-	bool is_leaf = 1;
 	for(int i = 0; i < len; i++){
 		int v = g[u][i];
 		if(v != p){
-			is_leaf = 0;
-			if(DFS(v, u)){
-				has_leaf[u] = 1;
-			}else{
-				addEdge(u, v);
-			}
+			DFS(v, u);
+			addEdge(u, v);
 		}
 	}
-	return is_leaf;
 }
 
 int solve(int cur, int need){
@@ -47,14 +38,14 @@ int solve(int cur, int need){
 		return r;
 	int v = to[cur];
 	r = 1LL * solve(head[v], 0) * solve(nxt[cur], 0) % mod;
-	r += 1LL * solve(head[v], !has_leaf[v]) * solve(nxt[cur], need) % mod;
+	r += 1LL * solve(head[v], 1) * solve(nxt[cur], need) % mod;
 	r %= mod;
 	return r;
 }
 
 int solve(){
 	memset(dp, -1, sizeof dp);
-	return (2LL * solve(head[0], !has_leaf[0])) % mod;
+	return (2LL * solve(head[0], 1)) % mod;
 }
 
 int main()
