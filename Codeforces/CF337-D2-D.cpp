@@ -1,3 +1,19 @@
+/********************************************************************************************************
+  Author: RedStone
+
+  Problem link:
+    https://codeforces.com/contest/337/problem/D
+
+  Idea:
+  	The idea is to calculate for each node the farthest marked node. Let this distance be d_i for each node.
+  	We count the node i if d_i <= d.
+  	To calculate d_i, we need to calculate in[i] and out[i], where in[i] is the farthest marked node to the current node
+  	in its subtree and out[i] is the farthest marked node to the current node in the tree after deleting the subtree of i.
+
+  Compexity:
+    Time: (N + M)
+    Memory: O(N + M)
+********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
 #define sz(x) ((int)(x).size())
