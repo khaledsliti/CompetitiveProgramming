@@ -1,3 +1,16 @@
+/********************************************************************************************************
+  Author: RedStone
+
+  Problem link:
+    https://codeforces.com/problemset/problem/815/C
+
+  Idea:
+    
+    
+  Compexity:
+    Time: O(N * N lg N)
+    Memory: O(N * N)
+********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
 
