@@ -8,30 +8,23 @@ struct Interval {
   Interval(int s, int e) : start(s), end(e) {}
 };
 
-// Empty, Push, Pop, Top
 class MinHeap{
   vector<int> item_;
   int Size(){
     return item_.size();
   }
   void MinHeapify(int cur){
-    while(cur * 2 + 1 < Size()){
-      int left = 2 * cur + 1;
-      int right = 2 * cur + 2;
-      int left_value = item_[2 * cur + 1];
-      int right_value = right < Size() ? item_[right] : INT_MAX;
-      int root_value = item_[cur];
-      if(root_value > right_value || root_value > left_value){
-        if(right_value > left_value){
-          swap(item_[cur], item_[left]);
-          cur = left;
-        }else{
-          swap(item_[cur], item_[right]);
-          cur = right;
-        }
-      }else{
-        break;
-      }
+    if(cur * 2 + 1 >= Size())
+      return;
+    int left = 2 * cur + 1;
+    int right = 2 * cur + 2;
+    int left_value = item_[2 * cur + 1];
+    int right_value = right < Size() ? item_[right] : INT_MAX;
+    int root_value = item_[cur];
+    if(root_value > right_value || root_value > left_value){
+      int nxt = left_value < right_value ? left : right;
+      swap(item_[cur], item_[nxt]);
+      MinHeapify(nxt);
     }
   }
   int Parent(int x){
