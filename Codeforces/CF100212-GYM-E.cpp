@@ -12,7 +12,7 @@
 
   Compexity:
     Time: O(N * M * 4^N)
-    Memory: O(M * 4^M)
+    Memory: O(M * 4^N)
 ********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
