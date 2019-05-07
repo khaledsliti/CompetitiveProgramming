@@ -1,3 +1,21 @@
+/********************************************************************************************************
+  Author: RedStone
+
+  Problem link:
+    https://codeforces.com/contest/1051/problem/E
+
+  Idea:
+    Let dp[i] be the solution for suffix starting from index i.
+    dp[i] is the sum dp[k] such that number a[i, k - 1] >= l and <= r.
+    If L = k - i < len(r) and > len(l) then k is valid because a number with fewer number of digits is always smaller.
+    We will take k for L = len(l) if number a[i, k - 1] >= l (same for L = len(r))
+    To check if a[i, k - 1] is less than or equal to l we can use Z-algorithm to get the longuest commun prefix
+    and then compare with the next digit.
+
+  Compexity:
+    Time: O(N)
+    Memory: O(N)
+********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
@@ -41,18 +59,8 @@ int main()
 {
   ios::sync_with_stdio(false);
   cin >> a >> l >> r;
-  // cout << a << endl << l << endl << r << endl;
   build(l + "#" + a, larr, sz(l) + 1);
   build(r + "#" + a, rarr, sz(r) + 1);
-
-  // for(int i = 0 ; i < sz(a) ; i++)
-  //   cout << larr[i] << " ";
-  // cout << endl;
-  // for(int i = 0 ; i < sz(a) ; i++)
-  //   cout << rarr[i] << " ";
-  // cout << endl;
-  // cout << endl;
-
   for(int i = 0 ; i <= sz(a) - sz(l) ; i++)
     larr[i] = (larr[i] >= sz(l) || a[i + larr[i]] > l[larr[i]]);
   for(int i = 0 ; i <= sz(a) - sz(r) ; i++)
@@ -61,16 +69,7 @@ int main()
     larr[i] = 0;
   for(int i = sz(a) - sz(r) + 1 ; i < sz(a) ; i++)
     rarr[i] = 1;
-
-  // for(int i = 0 ; i < sz(a) ; i++)
-  //   cout << larr[i] << " ";
-  // cout << endl;
-  // for(int i = 0 ; i < sz(a) ; i++)
-  //   cout << rarr[i] << " ";
-  // cout << endl;
-
   dp[sz(a)] = suff[sz(a)] = 1;
-
   for(int i = sz(a) - 1 ; i >= 0 ; i--){
     if(a[i] == '0'){
       dp[i] = l == "0" ? dp[i + 1] : 0;
