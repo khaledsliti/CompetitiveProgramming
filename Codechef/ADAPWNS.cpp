@@ -1,3 +1,16 @@
+/********************************************************************************************************
+  Author: RedStone
+
+  Problem link:
+    https://www.codechef.com/COOK102B/problems/ADAPWNS
+
+  Idea:
+    https://discuss.codechef.com/problems/ADAPWNS
+
+  Compexity:
+    Time: O(N)
+    Memory: O(N)
+********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
