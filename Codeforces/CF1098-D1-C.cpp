@@ -12,24 +12,12 @@ long long s;
 int cnt[N];
 int par[N];
 
-bool check(int br)
+bool check(long long rem_sum, int prv, int rem_nodes, int lev, int br)
 {
   if(br == 1)
-    return 1LL * n * (n + 1) / 2 == s;
+    return 1LL * rem_nodes * (lev + lev + rem_nodes) / 2 == rem_sum;
   long long res = 0;
-  long long rem = n, lev = 1;
-  for(long long i = 1 ; rem > 0 ; i *= br, lev++){
-    long long take = min(rem, i);
-    res += 1LL * take * lev;
-    rem -= take;
-  }
-  return res <= s;
-}
-
-bool check(long long rem_sum, int prv, int rem_nodes, int lev)
-{
-  long long res = 0;
-  for(long long i = 1LL * prv * b ; rem_nodes > 0 ; i *= b, lev++){
+  for(long long i = 1LL * prv * br ; rem_nodes > 0 ; i *= br, lev++){
     long long take = min(1LL * rem_nodes, i);
     res += take * lev;
     rem_nodes -= take;
@@ -46,7 +34,7 @@ void solve(long long rem_sum, int cur_node, int prv, int lev)
   int best = -1;
   while(l <= r){
     int take = (l + r) / 2;
-    if(check(rem_sum - 1LL * take * lev, take, rem_nodes - take, lev + 1)){
+    if(check(rem_sum - 1LL * take * lev, take, rem_nodes - take, lev + 1, b)){
       best = take;
       r = take - 1;
     }else{
@@ -72,7 +60,7 @@ int main()
   b = n;
   while(l <= r){
     int mid = (l + r) / 2;
-    if(check(mid)){
+    if(check(s - 1, 1, n - 1, 2, mid)){
       b = mid;
       r = mid - 1;
     }else{
