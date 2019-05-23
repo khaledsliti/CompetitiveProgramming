@@ -1,3 +1,16 @@
+/********************************************************************************************************
+  Author: RedStone
+
+  Problem link:
+    https://codeforces.com/contest/1098/problem/C
+
+  Idea:
+    https://codeforces.com/blog/entry/64331
+    
+  Compexity:
+    Time: O(N log(S))
+    Memory: O(N)
+********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
