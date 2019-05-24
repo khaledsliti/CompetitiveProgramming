@@ -6,11 +6,11 @@
 
   Idea:
     Let's suppose that we want to build a word abcde.
-    This word can be formed by prefix ab and suffix cde. Or maybe abc | de.
+    This word can be formed by prefix "ab" and suffix "cde". Or maybe with "abc" and "de".
     So, we have to count the number of all combinations of prefixes and suffixes,
     than substruct all redundent words.
-    The word "abcde" is redundant if we can form it with a smaller prefix (like "abc|de" and "ab|cde").
-    So, for each prefix we substruct all suffixes with size greater than of equal to 2 and starting with the last letter of the prefix.
+    The word "abcde" is redundant if and only if we can form it with a smaller prefix (like "abc|de" and "ab|cde").
+    So, for each prefix we substruct all suffixes with size greater than of equal to 2 and starting with the last letter of this prefix.
     To get distinct prefixes and suffixes we can use two tries.
 
   Compexity: N = sum of letters in all prefixes, M = sum of letters in all suffixes.
