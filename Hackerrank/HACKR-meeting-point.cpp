@@ -78,5 +78,5 @@ int main()
   for(int i = 0 ; i < n ; i++)
     best = min(best, calc(x[i], xcum, xs) + calc(y[i], ycum, ys));
   cout << best / 2 << endl;
-	return 0;
+  return 0;
 }
