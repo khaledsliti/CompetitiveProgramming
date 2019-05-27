@@ -13,14 +13,14 @@ double p[N];
 
 int main()
 {
-  cin >> n;
+  scanf("%d", &n);
   double ans = 0.0;
   double soFar = 0;
   for(int i = 0 ; i < n ; i++){
-    cin >> p[i];
+    scanf("%lf", &p[i]);
     soFar = soFar * p[i] + p[i] * p[i - 1];
     ans += 2.0 * soFar + p[i];
   }
-  cout << fixed << setprecision(18) << ans << endl;
+  printf("%.18f\n", ans);
   return 0;
 }
