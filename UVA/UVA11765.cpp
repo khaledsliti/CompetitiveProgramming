@@ -1,5 +1,29 @@
+/********************************************************************************************************
+  Author: RedStone
+
+  Problem link:
+    https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&category=0&problem=2865&mosmsg=Submission+received+with+ID+23410278
+
+  Idea:
+    Let's a build a graph in which the nodes are the components and edges are the interconnections.
+    The weight of an edge is the cost of the interconnection.
+    We add a "src" node representing the top layer and a "sink" node representing the down layer.
+    We add edges between each node and the src with wight equal to the cost of placing the component in the top layer.
+    The same thing for the sink.
+    The solution of the problem is the min cut to seperate the src from the sink.
+
+  Compexity:
+    Time: O(F * (N + M))
+    Memory: O(N + M)
+********************************************************************************************************/
 #include <bits/stdc++.h>
 using namespace std;
+
+void printTime(clock_t start, clock_t end)
+{
+  long long time_taken = double(end - start) * 1000.0 / double(CLOCKS_PER_SEC);
+  cout << "Time = " << time_taken << endl;
+}
 
 const int oo = 1e9;
 const int N = 205, E = 3e5;
@@ -7,7 +31,7 @@ const int N = 205, E = 3e5;
 int n, m, ID = 5, e;
 int head[N], nxt[E], to[E], cap[E];
 int up[N], down[N];
-int vis[N], prv[N];
+int vis[N], prv[N], edge[N];
 
 void init()
 {
@@ -25,6 +49,12 @@ void addEdge(int f, int t, int c)
   e++;
 }
 
+void addAugEdge(int f, int t, int c, int r)
+{
+  addEdge(f, t, c);
+  addEdge(t, f, r);
+}
+
 int dfs(int cur, int MX, int lowerFlow)
 {
   if(vis[cur] == ID || MX == 0)
@@ -32,10 +62,9 @@ int dfs(int cur, int MX, int lowerFlow)
   vis[cur] = ID;
   if(cur == n - 1)
     return MX;
-  for(int k = head[cur] ; k != -1 ; k = nxt[k]){
-    int nxt = to[k];
+  for(int k = head[cur] ; ~k ; k = nxt[k]){
     if(cap[k] < lowerFlow) continue;
-    int flow = dfs(nxt, min(MX, cap[k]), lowerFlow);
+    int flow = dfs(to[k], min(MX, cap[k]), lowerFlow);
     if(!flow) continue;
     cap[k] -= flow;
     cap[k ^ 1] += flow;
@@ -50,22 +79,11 @@ long long solve()
   int flow;
   int low = (1<<30);
   while(low){
-    for(ID++; (flow = dfs(0, 1e9, low)); ID++)
+    for(ID++; (flow = dfs(0, low)); ID++)
       ret += flow;
     low >>= 1;
   }
   return ret;
-}
-
-void reverseGraph()
-{
-  for(int i = 0 ; i < n ; i++){
-    vector<pair<int, int>> adj;
-    for(int k = head[i] ; ~k ; k = nxt[k])
-      adj.push_back({ to[k], cap[k] });
-    for(int k = head[i], j = adj.size() - 1 ; ~k ; k = nxt[k], j--)
-      to[k] = adj[j].first, cap[k] = adj[j].second;
-  }
 }
 
 int main()
@@ -85,18 +103,16 @@ int main()
       scanf("%d", &t);
       up[i] = t >= 0 ? up[i] : oo;
       down[i] = t <= 0 ? down[i] : oo;
-      addEdge(0, i, up[i]);
-      addEdge(i, 0, 0);
-      addEdge(i, n - 1, down[i]);
-      addEdge(n - 1, i, 0);
     }
     while(m--){
       int a, b, c;
       scanf("%d%d%d", &a, &b, &c);
-      addEdge(a, b, c);
-      addEdge(b, a, c);
+      addAugEdge(a, b, c, c);
     }
-    reverseGraph();
+    for(int i = 1 ; i < n - 1 ; i++){
+      addAugEdge(0, i, up[i], 0);
+      addAugEdge(i, n - 1, down[i], 0);
+    }
     cout << solve() << endl;
   }
   return 0;
