@@ -9,6 +9,8 @@
     So we have to buy the offers for successive days.
     The problem become as follows: Given the set of offers select an offer to take in each days so that you can maximize the profit.
     This is a min cost flow problem in which we have to match the offers with the days with a cost equal to the profit
+    ----------- Better solution (more efficient)
+    https://github.com/khaledsliti/CompetitiveProgramming/blob/master/Codeforces/CF1107-D12-F-bis.cpp
 
   Complexity:
     Time: O(N^3 lg N)
