@@ -8,42 +8,28 @@ struct TreeNode{
 };
 
 class BSTIterator{
-  vector<TreeNode*> st;
+  stack<TreeNode*> st;
 public:
   BSTIterator(TreeNode* root) {
-    st.push_back(new TreeNode(INT_MIN));
-    st.back()->right = root;
-  }
-  int next() {
-    int sz = st.size();
-    if(st[sz - 1]->right){
-      TreeNode* cur = st[sz - 1]->right;
-      while(cur != NULL){
-        st.push_back(cur);
-        cur = cur->left;
-      }
-    }else{
-      while(true){
-        int child_value = st.back()->val;
-        st.pop_back();
-        int cur_value = st.back()->val;
-        if(cur_value > child_value)
-          break;
-      }
+    auto cur = root;
+    while (cur) {
+      st.push(cur);
+      cur = cur->left;
     }
-    return st.back()->val;
+  }
+  int next() { // you can not call next more than O(N) so this will be O(1) per call in average
+    auto node = st.top();
+    st.pop();
+    int val = node->val;
+    auto cur = node->right;
+    while (cur) {
+      st.push(cur);
+      cur = cur->left;
+    }
+    return val;
   }
   bool hasNext() {
-    if(!st.size())
-      return false;
-    int sz = st.size();
-    if(st[sz-1]->right)
-      return true;
-    for(int i = sz - 2 ; i >= 0 ; i--){
-      if(st[i]->val > st[i + 1]->val)
-        return true;
-    }
-    return false;
+    return !st.empty();
   }
 };
 
