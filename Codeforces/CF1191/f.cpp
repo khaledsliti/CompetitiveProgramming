@@ -227,6 +227,6 @@ int main()
       ans += 1LL * left * right;
     }
   }
-  cout << ans << endl;
+  std::cout << ans << endl;
   return 0;
 }
