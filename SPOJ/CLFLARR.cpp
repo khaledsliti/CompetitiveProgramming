@@ -55,11 +55,25 @@ namespace Solution2{
 
   int n, q;
   vector<seg> queries;
-  int par[N], col[N];
+  int par[N], rank[N];
+  int col[N];
+  int endOf[N];
 
   int findSet(int i)
   {
     return i == par[i] ? i : par[i] = findSet(par[i]);
+  }
+  void unionSet(int a, int b)
+  {
+    a = findSet(a);
+    b = findSet(b);
+    if(a != b){
+      endOf[a] = endOf[b];
+      if(rank[a] < rank[b])
+        swap(a, b);
+      par[b] = a;
+      rank[a] += rank[b];
+    }
   }
 
   void solve()
@@ -70,12 +84,15 @@ namespace Solution2{
       scanf("%d%d%d", &l, &r, &c);
       queries.push_back({--l, r, c});
     }
-    for(int i = 0 ; i <= n ; i++)
+    for(int i = 0 ; i <= n ; i++){
+      rank[i] = 1;
       par[i] = i;
+      endOf[i] = i;
+    }
     for(int i = q - 1 ; i >= 0 ; i--){
-      for(int cur = findSet(queries[i].l) ; cur < queries[i].r ; cur = findSet(cur + 1)){
+      for(int cur = endOf[findSet(queries[i].l)] ; cur < queries[i].r ; cur = endOf[findSet(cur)]){
         col[cur] = queries[i].c;
-        par[cur] = queries[i].r;
+        unionSet(cur, cur + 1);
       }
     }
     for(int i = 0 ; i < n ; i++)
