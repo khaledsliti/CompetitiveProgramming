@@ -2,11 +2,11 @@
 #include <unordered_map>
 using namespace std;
 
-const int UNITSIZEBITS = 8;
+const int UNIT_SIZE_BITS = 8;
 
 struct Hash{
   int operator()(const pair<int, int>& p) const {
-    return (p.first << UNITSIZEBITS) + p.second;
+    return (p.first << UNIT_SIZE_BITS) + p.second;
   }
 };
 
