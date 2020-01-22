@@ -5,12 +5,26 @@ using namespace std;
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
 
+const int N = 25;
+
+long long fact[N];
+
+long long P(long long n, long long r)
+{
+  return fact[n] / fact[n - r];
+}
+
+long long C(long long n, long long k)
+{
+  return fact[n] / fact[n - k] / fact[k];
+}
+
 int main()
 {
-  const int N = 20;
-  vector<int> collection(N, 1);
-  adjacent_difference(begin(collection), end(collection) - 1, begin(collection) + 1, plus<int>());
-  // adjacent_difference(begin(collection), end(collection) - 1, begin(collection) + 1, plus<int>());
-  for_each(all(collection), [](const auto& x){ cout << x << endl; });
+  fact[0] = 1;
+  for(int i = 1 ; i < N ; i++)
+    fact[i] = fact[i - 1] * i;
+  cout << P(15, 10) / fact[10] * P(20, 10) << endl;
+  cout << C(15, 10) * fact[10] * C(20, 10) << endl;
   return 0;
 }
