@@ -9,7 +9,7 @@ using namespace std;
 
 class Solution {
 public:
-  string breakPalindrome(string& palindrome) {
+  string breakPalindrome(string palindrome) {
     int n = palindrome.size();
     if(n == 1)
       return "";
