@@ -10,31 +10,10 @@ using namespace std;
 class Solution {
 public:
   vector<int> searchRange(vector<int>& arr, int target) {
-    int n = arr.size();
-    int first = n, left = 0, right = n - 1;
-    while(left <= right) {
-      int mid = (left + right) >> 1;
-      if(arr[mid] >= target) {
-        first = mid;
-        right = mid - 1;
-      }else {
-        left = mid + 1;
-      }
-    }
-    if(first >= n || arr[first] != target)
-      return {-1, -1};
-    int last = first;
-    left = first + 1, right = n - 1;
-    while(left <= right) {
-      int mid = (left + right) >> 1;
-      if(arr[mid] <= target) {
-        last = mid;
-        left = mid + 1;
-      }else{
-        right = mid - 1;
-      }
-    }
-    return { first, last };
+    int first = lower_bound(begin(arr), end(arr), target) - begin(arr);
+    int last = lower_bound(begin(arr), end(arr), target + 1) - begin(arr) - 1;
+    if(first > last) return {-1, -1};
+    return {first, last};
   }
 };
 
