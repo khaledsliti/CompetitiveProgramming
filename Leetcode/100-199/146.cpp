@@ -1,48 +1,55 @@
-class LRUCache {
-  int capacity;
-  list<pair<int, int>> used; // contains pairs <key, value>
-  unordered_map<int, list<pair<int, int>>::iterator> keys; // contains keys
+#include <bits/stdc++.h>
+using namespace std;
 
-  void ChangeToFront(unordered_map<int, list<pair<int, int>>::iterator>::iterator it){
-    if(it->second == used.begin())
-      return;
-    int key = it->second->first;
+class LRUCache {
+
+  typedef list<pair<int, int>>::iterator list_iterator;
+  typedef unordered_map<int, list_iterator>::iterator map_iterator;
+
+  int capacity;
+  list<pair<int, int>> values;
+  unordered_map<int, list_iterator> keys;
+
+  int Erase(int key) {
+    auto it = keys.find(key);
+    if(it == keys.end()) return -1;
     int value = it->second->second;
-    used.erase(it->second);
-    used.push_front({ key, value });
-    it->second = used.begin();
+    values.erase(it->second);
+    keys.erase(it);
+    return value;
   }
-  void EraseBack(){
-    int key = used.back().first;
-    keys.erase(key);
-    used.pop_back();
+
+  void Add(int key, int val) {
+    values.push_front({ key, val });
+    keys[key] = values.begin();
+    if(values.size() > this->capacity) {
+      keys.erase(values.back().first);
+      values.pop_back();
+    }
   }
-  int Size(){
-    return used.size();
+
+  bool Exist(int key) {
+    return keys.count(key) > 0;
   }
 public:
   LRUCache(int capacity) {
     this->capacity = capacity;
   }
   int get(int key) {
-    auto it = keys.find(key);
-    if(it == keys.end())
+    if(!Exist(key))
       return -1;
-    ChangeToFront(it);
-    return used.front().second;
+    int value = Erase(key);
+    Add(key, value);
+    return value;
   }
   void put(int key, int value) {
-    auto it = keys.find(key);
-    if(it == keys.end()){ // put
-      if(Size() == capacity){
-        keys.erase(used.back().first);
-        used.pop_back();
-      }
-      used.push_front({ key, value });
-      keys.insert({ key, used.begin() });
-    }else{ // set
-      it->second->second = value;
-      ChangeToFront(it);
-    }
+    if(Exist(key)) Erase(key);
+    Add(key, value);
   }
 };
+
+int main()
+{
+
+  return 0;
+}
