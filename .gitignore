@@ -1,37 +1,11 @@
-# Prerequisites
-*.d
+# Ignore all
+*
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Unignore good extensions
+!*.cpp
+!*.c
+!*.java
+!*.py
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# Input/Output files
-*.in
-*.out
-*.txt
+# Unignore all dirs
+!*/
