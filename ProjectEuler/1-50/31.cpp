@@ -7,22 +7,20 @@ using namespace std;
 #define D(x) cerr << #x << " = " << (x) << '\n'
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
+typedef long long ll;
 
-const int N = 1e5 + 5;
-
-int n;
+int coins[] {1, 2, 5, 10, 20, 50, 100, 200};
+int dp[201];
 
 int main()
 {
-  cin >> n;
-  if(n < 6){
-    cout << -1 << endl;
-  }else{
-    cout << "1 2\n1 3\n1 4\n";
-    for(int i = 5 ; i <= n ; i++)
-      cout << "2 " << i << endl;
+  dp[0] = 1;
+  for(int i = 0; i < 8; i++) {
+    for(int j = 0; j <= 200; j++) {
+      if(j - coins[i] >= 0)
+        dp[j] += dp[j - coins[i]];
+    }
   }
-  for(int i = 2 ; i <= n ; i++)
-    cout << i - 1 << " " << i << endl;
+  cout << dp[200] << endl;
   return 0;
 }

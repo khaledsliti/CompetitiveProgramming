@@ -7,23 +7,27 @@ using namespace std;
 #define D(x) cerr << #x << " = " << (x) << '\n'
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
+typedef long long ll;
 
-const int N = 2e5 + 5;
+const int N = 1e8;
 
-string s;
-int dp[N];
+bool check(int x) {
+  ll s = 0;
+  ll t = x;
+  while(x > 0) {
+    int d = x % 10;
+    s += d * d * d * d * d;
+    x /= 10;
+  }
+  return s == t;
+}
 
 int main()
 {
-  cin >> s;
-  s += s;
-  int ans = 1;
-  int cur = 0;
-  for(int i = 1 ; i < sz(s) ; i++) {
-    if(s[i] != s[i - 1])
-      cur++;
-    else cur = 1;
-    ans = max(ans, min(cur, sz(s) / 2));
+  ll ans = 0;
+  for(int i = 2; i < N; i++) {
+    if(check(i))
+      ans += i;
   }
   cout << ans << endl;
   return 0;

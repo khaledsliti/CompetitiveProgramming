@@ -22,6 +22,7 @@ int main()
   scanf("%d%d", &n, &m);
   for(int i = 0 ; i < n ; i++)
     scanf("%s", s[i]);
+  int a = 0, b = 0;
   for(int i = 0 ; i < n ; i++) {
     int cnt = 0;
     for(int j = 0 ; j < m ; j++) {
@@ -33,6 +34,7 @@ int main()
         j = k - 1;
       }
     }
+    if(cnt == 0) a = 1;
     if(cnt > 1) {
       cout << -1 << endl;
       return 0;
@@ -49,11 +51,14 @@ int main()
         i = k - 1;
       }
     }
+    if(cnt == 0) b = 1;
     if(cnt > 1) {
       cout << -1 << endl;
       return 0;
     }
   }
+  if(a ^ b)
+    return cout << -1 << endl, 0;
   int ans = 0;
   for(int i = 0 ; i < n ; i++)
     for(int j = 0 ; j < m ; j++) {
