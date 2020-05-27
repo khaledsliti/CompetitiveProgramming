@@ -48,9 +48,12 @@ int get_lca(int a, int b)
 
 bool check(int u, int v) {
   int lca = get_lca(u, v);
-  bool a = lev[incr[u]] <= lev[lca] || lev[decr[incr[u]]] <= lev[lca];
-  bool b = lev[incr[v]] <= lev[lca] || lev[decr[incr[v]]] <= lev[lca];
-  return a && b;
+  for(int i = 0; i < 2; i++) {
+    if(lev[incr[u]] <= lev[lca] && lev[decr[incr[v]]] <= lev[lca])
+      return true;
+    swap(u, v);
+  }
+  return false;
 }
 
 void solve() {
