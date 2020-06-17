@@ -12,38 +12,45 @@ typedef long long ll;
 const int N = 2e5 + 5;
 
 int n;
-int arr[N], a[N];
+int arr[N];
+int id[N];
+vector<int> pos[N];
 int dp[N];
 
 void solve() {
   cin >> n;
-  map<int, int> f, l, fr;
+  vector<int> a(n);
   for(int i = 0; i < n; i++) {
     cin >> arr[i];
     a[i] = arr[i];
-    l[arr[i]] = i;
-    if(!f.count(arr[i]))
-      f[arr[i]] = i;
+    pos[i].clear();
   }
-  sort(a, a + n);
-  map<int, int> nxt;
-  for(int i = 1; i < n; i++) {
-    if(a[i - 1] != a[i])
-      nxt[a[i - 1]] = a[i];
+  sort(all(a));
+  a.resize(unique(all(a)) - begin(a));
+  for(int i = 0; i < n; i++) {
+    arr[i] = lower_bound(all(a), arr[i]) - begin(a);
+    pos[arr[i]].push_back(i);
   }
-  map<int, int> pos;
-  int best = 1;
+  for(int i = 0; i < n; i++)
+    dp[i] = 0;
+  int best = 0;
   for(int i = n - 1; i >= 0; i--) {
-    dp[i] = ++fr[arr[i]];
-    // take next all
-    if(nxt.count(arr[i]) && l[arr[i]] < f[nxt[arr[i]]]) {
-
+    dp[i] = sz(pos[arr[i]]) - (lower_bound(all(pos[arr[i]]), i) - begin(pos[arr[i]]));
+    if(i == pos[arr[i]].front()) {
+      int last = pos[arr[i]].back();
+      if(arr[i] + 1 < n && sz(pos[arr[i] + 1])) {
+        int v = arr[i] + 1;
+        int idx = lower_bound(all(pos[v]), last) - begin(pos[v]);
+        if(idx < sz(pos[v])) {
+          dp[i] = max(dp[i], sz(pos[arr[i]]) + dp[pos[v][idx]]);
+        }
+      }
     }
-    // take some next
-    if(nxt.count(arr[i]) && pos.count(nxt[arr[i]])) {
-
+    best = max(best, dp[i]);
+    if(arr[i] > 0) {
+      int p = arr[i] - 1;
+      best = max(best, dp[i] + (lower_bound(all(pos[p]), i) - begin(pos[p])));
     }
-    pos[arr[i]] = i;
   }
   cout << n - best << endl;
 }
