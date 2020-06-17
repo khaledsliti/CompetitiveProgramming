@@ -16,8 +16,7 @@ pair<int, int> arr[N];
 
 int main()
 {
-  cin >> n;
-  k = 1;
+  cin >> n >> k;
   for(int i = 0; i < n; i++) {
     int a, b;
     cin >> a >> b;
