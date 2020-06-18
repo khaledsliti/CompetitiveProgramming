@@ -18,7 +18,6 @@ struct P{
   }
 };
 
-
 int n;
 vector<P> pr;
 
