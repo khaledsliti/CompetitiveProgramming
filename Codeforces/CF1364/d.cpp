@@ -47,8 +47,6 @@ void reduceCycle() {
   memset(col, 0, sizeof(col));
   for(int i = 0; i < sz(cycle); i++)
     idx[cycle[i]] = i;
-  // for(int i = 0; i < sz(cycle); i++)
-  //   cout << cycle[i] + 1 << " " << idx[cycle[i]] << endl;
   int cur = cycle[0];
   int f = 1;
   while(true) {
@@ -60,7 +58,6 @@ void reduceCycle() {
       if(cur == cycle[0] && v == cycle.back()) continue;
       if(idx[v] > idx[nxt]) nxt = v;
     }
-    // D(nxt + 1);
     cur = nxt;
   }
 }
