@@ -10,13 +10,14 @@ using namespace std;
 typedef long long ll;
  
 const int A = 128;
-const int N = 800005;
+const int N = 400005;
  
 int n;
 char s[N];
 int suff[N], t_suff[N], rnk[N], rnk_start[N], t_rnk[N];
 int lcp[N];
 int* head = t_rnk, *nxt = lcp;
+int nxt_pos[N], prv_pos[N];
  
 struct Comparator {
   int len;
@@ -65,42 +66,47 @@ void build_suff_array() {
   }
 }
  
-int get_next(int l, int len, int r) {
-  // s[suff[l] + len]
-  int last = l;
-  char target = s[suff[l] + len];
-  while(l <= r) {
-    int mid = (l + r) / 2;
-    if(s[suff[mid] + len] == target) {
-      last = mid;
-      l = mid + 1;
-    } else {
-      r = mid - 1;
-    }
+void build_lcp() {
+  for(int i = 0, len = 0; i < n; i++) {
+    int j = suff[rnk[i] - 1];
+    while(s[i + len] == s[j + len]) len++;
+    lcp[rnk[i]] = len;
+    if(len) len--;
   }
-  return last + 1;
 }
- 
-ll solve(int l, int r, int len) {
-  if(l >= r || !s[suff[r] + len]) return 0;
-  ll cnt = r - l + 1;
-  ll res = len > 0 ? cnt * (cnt - 1) / 2 : 0LL;
-  while(l <= r) {
-    int nxt = get_next(l, len, r);
-    res += solve(l, nxt - 1, len + 1);
-    l = nxt;
-  }
-  return res;
-}
- 
+
 int main()
 {
   scanf("%s", s);
   n = strlen(s);
   build_suff_array();
-  // for(int i = 0; i <= n; i++)
-  //   printf("%d %s\n", suff[i], s + suff[i]);
-  ll ans = solve(1, n, 0);
+  build_lcp();
+
+
+  stack<pair<int, int>> st;
+  st.push({-1, n + 1});
+  for(int i = n; i > 0; i--) {
+    while(st.empty() == false && st.top().first >= lcp[i])
+      st.pop();
+    nxt_pos[i] = st.top().second;
+    st.push({lcp[i], i});
+  }
+  while(st.empty() == false)
+    st.pop();
+  st.push({-1, 0});
+  for(int i = 1; i <= n; i++) {
+    while(st.empty() == false && st.top().first > lcp[i])
+      st.pop();
+    prv_pos[i] = st.top().second;
+    st.push({lcp[i], i});
+  }
+
+  ll ans = 0;
+  for(int i = 1; i <= n; i++) {
+    int l = prv_pos[i] + 1;
+    int r = nxt_pos[i] - 1;
+    ans += 1LL * lcp[i] * (i - l + 1) * (r - i + 1);
+  }
   ans += 1LL * n * (n + 1) / 2;
   cout << ans << endl;
   return 0;
