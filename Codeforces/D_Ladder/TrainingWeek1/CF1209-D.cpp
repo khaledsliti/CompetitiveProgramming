@@ -9,30 +9,34 @@ using namespace std;
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 
-const int N = 1e6 + 5;
+const int N = 1e5 + 5;
 
-int n, m, k;
-int a[N];
+int n, m;
+int par[N];
+
+int fs(int x) { return x == par[x] ? x : par[x] = fs(par[x]); }
 
 int main()
 {
-  scanf("%d%d%d", &n, &m, &k);
+  ios::sync_with_stdio(false);
+  cin >> n >> m;
   for(int i = 0; i < n; i++) {
-    int x;
-    scanf("%d", &x);
-    a[x]++;
+    par[i] = i;
   }
-  int cur_sum = 0;
-  int ans = 0;
-  for(int i = 1; i < N; i++) {
-    cur_sum += a[i];
-    if(i - m > 0) cur_sum -= a[i - m];
-    while(cur_sum >= k) {
-      a[i]--;
+  int ans = 0;  
+  for(int i = 0; i < m ;i++) {
+    int a, b;
+    cin >> a >> b;
+    --a, --b;
+    a = fs(a);
+    b = fs(b);
+    if(a == b) {
       ans++;
-      cur_sum--;
+    } else {
+      par[a] = b;
     }
   }
+
   cout << ans << endl;
   return 0;
 }
