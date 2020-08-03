@@ -10,14 +10,15 @@ using namespace std;
 #define rall(x) (x).rbegin(), (x).rend()
 typedef long long ll;
 
-int mod;
+const int A = 41;
 
 struct SegTree {
   struct TreeNode {
-    int a[2][2];
+    ll inv;
+    int occ[A];
     TreeNode() {
-      a[0][0] = a[1][1] = 1;
-      a[0][1] = a[1][0] = 0;
+      inv = 0;
+      memset(occ, 0, sizeof occ);
     }
   };
   int n;
@@ -39,30 +40,33 @@ struct SegTree {
     build(0, 0, n - 1, node);
   }
   void merge(TreeNode& res, const TreeNode& a, const TreeNode& b) {
-    for(int i = 0; i < 2; i++)
-      for(int j = 0; j < 2; j++) {
-        res.a[i][j] = 0;
-        for(int k = 0; k < 2; k++)
-          res.a[i][j] = (res.a[i][j] + 1LL * a.a[i][k] * b.a[k][j] % mod) % mod;
-      }
+    res.inv = a.inv + b.inv;
+    ll pref[A];
+    for(int i = 0; i < A; i++) {
+      pref[i] = b.occ[i];
+      if(i > 0) pref[i] += pref[i - 1];
+    }
+    for(int i = 1; i < A; i++)
+      res.inv += pref[i - 1] * a.occ[i];
+    for(int i = 0; i < A; i++)
+      res.occ[i] = a.occ[i] + b.occ[i];
   }
-  void update(int cur, int s, int e, int idx, int a[2][2]) {
+  void update(int cur, int s, int e, int idx, int val) {
     if(s > idx || e < idx) return;
     if(s == e) {
-      for(int i = 0; i < 2; i++)
-        for(int j = 0; j < 2; j++)
-          st[cur].a[i][j] = a[i][j];
+      st[cur] = TreeNode();
+      st[cur].occ[val] = 1;
       return;
     }
     int mid = (s + e) / 2;
     int l = 2 * cur + 1;
     int r = 2 * cur + 2;
-    update(l, s, mid, idx, a);
-    update(r, mid + 1, e, idx, a);
+    update(l, s, mid, idx, val);
+    update(r, mid + 1, e, idx, val);
     merge(st[cur], st[l], st[r]);
   }
-  void update(int idx, int a[2][2]) {
-    update(0, 0, n - 1, idx, a);
+  void update(int idx, int val) {
+    update(0, 0, n - 1, idx, val);
   }
   TreeNode query(int cur, int s, int e, int i, int j) {
     if(s > j || e < i) return TreeNode();
@@ -70,39 +74,38 @@ struct SegTree {
     int mid = (s + e) / 2;
     int l = 2 * cur + 1;
     int r = 2 * cur + 2;
-    TreeNode res;
-    merge(res, query(l, s, mid, i, j), query(r, mid + 1, e, i, j));
-    return res;
+    TreeNode ans;
+    merge(ans, query(l, s, mid, i, j), query(r, mid + 1, e, i, j));
+    return ans;
   }
   TreeNode query(int i, int j) {
     return query(0, 0, n - 1, i, j);
   }
 };
 
-int n, q;
-
-
 int main()
 {
-  scanf("%d%d%d", &mod, &n, &q);
+  int n, q;
+  scanf("%d%d", &n, &q);
   SegTree st;
   st.init(n, SegTree::TreeNode());
   for(int i = 0; i < n; i++) {
-    int a[2][2];
-    for(int j = 0; j < 2; j++)
-      for(int k = 0; k < 2; k++)
-        scanf("%d", &a[j][k]);
+    int a;
+    scanf("%d", &a);
     st.update(i, a);
   }
   while(q--) {
-    int l, r;
-    scanf("%d%d", &l, &r);
-    auto m = st.query(--l, --r);
-    for(int i = 0; i < 2; i++) {
-      for(int j = 0; j < 2; j++)
-        printf("%d%c", m.a[i][j], " \n"[j]);
+    int t;
+    scanf("%d", &t);
+    if(t == 1) {
+      int l, r;
+      scanf("%d%d", &l, &r);
+      printf("%lld\n", st.query(--l, --r).inv);
+    } else {
+      int i, v;
+      scanf("%d%d", &i, &v);
+      st.update(--i, v);
     }
-    printf("\n");
   }
   return 0;
 }
