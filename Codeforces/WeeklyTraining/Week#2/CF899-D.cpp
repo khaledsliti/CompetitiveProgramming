@@ -26,5 +26,13 @@ int main()
     cout << 1LL * n * (n - 1) / 2 << endl;
     return 0;
   }
+
   return 0;
 }
+
+/*
+
+a + b = number + 10^len * q
+a = number + 10^len * q - b;
+
+*/
