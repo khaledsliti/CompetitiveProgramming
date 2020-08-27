@@ -7,38 +7,42 @@ using namespace std;
 #define D(x) cerr << #x << " = " << (x) << '\n'
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
-#define rsort(a, b) sort(a, b), reverse(a, b)
 typedef long long ll;
 
-const int N = 51;
-const int K = 20;
+const int N = 1e5 + 5;
 
 int n, k;
 int a[N];
 
-bool check(ll total) {
-  ll need = total * k;
-  ll sum = 0;
+bool check(ll sum) {
+  int cnt = 0;
   for(int i = 0; i < n; i++) {
-    sum += min((ll)a[i], total);
+    if(a[i] > sum) return false;
+    ll cur = 0;
+    int j = i;
+    while(j < n && cur + a[j] <= sum) {
+      cur += a[j++];
+    }
+    i = j - 1;
+    cnt++;
   }
-  return sum >= need;
+  return cnt <= k;
 }
 
 int main()
 {
-  cin >> k >> n;
-  for(int i = 0; i < n; i++) {
+  cin >> n >> k;
+  for(int i = 0; i < n ; i++) {
     cin >> a[i];
   }
-  ll l = 0, r = 1e16, best = 0;
-  while(l <= r) {
-    ll mid = l + (r - l) / 2;
+  ll lo = 0, hi = 1e16, best = -1;
+  while(lo <= hi) {
+    ll mid = lo + (hi - lo) / 2;
     if(check(mid)) {
       best = mid;
-      l = mid + 1;
+      hi = mid - 1;
     } else {
-      r = mid - 1;
+      lo = mid + 1;
     }
   }
   cout << best << endl;
