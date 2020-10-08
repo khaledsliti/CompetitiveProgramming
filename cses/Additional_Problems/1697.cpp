@@ -84,46 +84,53 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
 // End Region
 
-const int N = 51;
-const int A = 1e4 + 5;
+const int N = 2e5 + 5;
 
-int n, att;
-int cnt[N];
-double p[N];
-double dp[A][N][N];
+int n;
+int d[N], nxt[N];
 
-double solve(int a, int x, int c) {
-  if(x >= n) return 1.0;
-  if(a <= 0) return 0.0;
-  double& res = dp[a][x][c];
-  if(res != -1) return res;
-  res = (1 - p[x]) * solve(a - 1, x, c) +
-    p[x] * solve(a - 1, x + (c + 1 == cnt[x]), (c + 1) % cnt[x]);
-  return res;
-}
-
-void solve() {
-  cin >> n;
-  for(int i = 0; i < n; i++) {
-    cin >> cnt[i] >> p[i];
-  }
-  cin >> att;
-  for(int i = 0; i <= att; i++) {
-    for(int j = 0; j < n; j++) {
-      for(int k = 0; k <= cnt[j]; k++) {
-        dp[i][j][k] = -1;
-      }
-    }
-  }
-  cout << fixed << setprecision(3) << solve(att, 0, 0) << endl;
+int find(int x) {
+  return nxt[x] == x ? x : nxt[x] = find(nxt[x]);
 }
 
 int main()
 {
-  int T;
-  cin >> T;
-  while(T--) {
-    solve();
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+
+  cin >> n;
+  priority_queue<pair<int, int>> pq;
+  for(int i = 0; i < n; i++) {
+    cin >> d[i];
+    if(d[i])
+      pq.push({d[i], i});
+  }
+  vector<pair<int, int>> sol;
+  while(pq.empty() == false) {
+    int u = pq.top().second;
+    pq.pop();
+    vector<int> nodes;
+    while(d[u]-- > 0) {
+      if(!sz(pq)) {
+        cout << "IMPOSSIBLE" << endl;
+        return 0;
+      }
+      int v = pq.top().second;
+      pq.pop();
+      sol.push_back({u, v});
+      --d[v];
+      nodes.push_back(v);
+    }
+    for(int u : nodes) {
+      if(d[u]) {
+        pq.push({d[u], u});
+      }
+    }
+  }
+  cout << sz(sol) << endl;
+  for(int i = 0; i < sz(sol); i++) {
+    cout << sol[i].first + 1 << " " << sol[i].second + 1 << endl;
   }
   return 0;
 }
