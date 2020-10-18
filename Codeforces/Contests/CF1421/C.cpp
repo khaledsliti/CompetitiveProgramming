@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define pb push_back
+#define mp make_pair
+#define endl '\n'
+#define D(x) cerr << #x << " = " << (x) << '\n'
+#define sz(x) ((int)(x).size())
+#define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+typedef long long ll;
+
+const int N = 1e5 + 5;
+
+string s;
+
+int main()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+
+  cin >> s;
+  int n = sz(s);
+  cout << 3 << endl;
+  cout << "L 2" << endl;
+  cout << "R 2" << endl;
+  n += n;
+  cout << "R " << n - 1 << endl;
+  return 0;
+}
