@@ -1,4 +1,3 @@
-// We only fail when we stop trying
 #include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
@@ -7,54 +6,48 @@ using namespace std;
 #define D(x) cerr << #x << " = " << (x) << '\n'
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
 typedef long long ll;
 
 const int N = 1e5 + 5;
 
 int n;
-vector<int> leaves, g[N];
-vector<pair<int, int>> sol;
+vector<int> g[N];
+int d[N];
+vector<int> vt;
 
-int dfs(int u, int p) {
-  if(sz(g[u]) == 1) {
-    return u;
-  }
-  vector<int> cur;
+void dfs(int u, int p) {
+  if(d[u] == 1) vt.pb(u);
   for(int v: g[u]) {
     if(v != p) {
-      cur.push_back(dfs(v, u));
+      dfs(v, u);
     }
   }
-  for(int i = 0; i < sz(cur) - 1; i += 2) {
-    sol.push_back({cur[i], cur[i + 1]});
-  }
-  if(sz(cur) & 1) {
-    sol.push_back({cur[0], cur[sz(cur) - 1]});
-  }
-  return cur.back();
 }
 
 int main()
 {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+
   cin >> n;
-  int root;
-  for(int i = 0; i < n - 1; i++) {
+  for(int i = 1; i < n; i++) {
     int a, b;
     cin >> a >> b;
-    --a, --b;
-    g[a].pb(b);
+    g[--a].pb(--b);
     g[b].pb(a);
-    for(int u: {a, b}) {
-      if(sz(g[u]) > 1) {
-        root = u;
-      }
-    }
+    d[a]++;
+    d[b]++;
   }
-  cout << root + 1 << endl;
-  dfs(root, -1);
-  cout << sz(sol) << endl;
-  for(int i = 0; i < sz(sol); i++) {
-    cout << sol[i].first + 1 << " " << sol[i].second + 1 << endl;
+  dfs(0, -1);
+  int s = sz(vt) / 2;
+  cout << (sz(vt) + 1) / 2 << endl;
+  for(int i = 0; i < s; i++) {
+    cout << vt[i] + 1 << " " << vt[i + s] + 1 << endl;
+  }
+  if(sz(vt) & 1) {
+    cout << vt[0] + 1 << " " << vt.back() + 1 << endl;
   }
   return 0;
 }
