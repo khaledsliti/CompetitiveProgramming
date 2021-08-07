@@ -10,6 +10,81 @@ using namespace std;
 #define rall(x) (x).rbegin(), (x).rend()
 typedef long long ll;
 
+// Region Debug
+string to_string(const string &s) {
+  return '"' + s + '"';
+}
+
+string to_string(const char* s) {
+  return to_string((string) s);
+}
+
+string to_string(bool b) {
+  return (b ? "true" : "false");
+}
+
+template<typename A, typename B>
+string to_string(const pair<A, B>& p);
+
+template <typename A, typename B, typename C>
+string to_string(tuple<A, B, C> p);
+
+template<typename T>
+string to_string(const vector<T>& v) {
+  string res = "{";
+  for (int i = 0; i < static_cast<int>(v.size()); i++) {
+    if (i > 0)
+      res += ", ";
+    res += to_string(v[i]);
+  }
+  res += "}";
+  return res;
+}
+
+template <size_t N>
+string to_string(bitset<N> v) {
+  string res = "";
+  for (size_t i = 0; i < N; i++) {
+    res += static_cast<char>('0' + v[i]);
+  }
+  return res;
+}
+
+template <typename A>
+string to_string(A v) {
+  bool first = true;
+  string res = "{";
+  for (const auto &x : v) {
+    if (!first)
+      res += ", ";
+    first = false;
+    res += to_string(x);
+  }
+  res += "}";
+  return res;
+}
+
+template<typename A, typename B>
+string to_string(const pair<A, B>& p) {
+  return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
+}
+
+template <typename A, typename B, typename C>
+string to_string(tuple<A, B, C> p) {
+  return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")";
+}
+
+void debug_out() { cerr << endl; }
+
+template <typename Head, typename... Tail>
+void debug_out(Head H, Tail... T) {
+  cerr << " " << to_string(H);
+  debug_out(T...);
+}
+
+#define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
+// End Region
+
 const int N = 3e5 + 5;
 const int V = 1e6 + 5;
 
@@ -34,7 +109,6 @@ Seg arr[N];
 Node st[V << 2];
 
 
-
 inline int L(int x) { return (x << 1) + 1; }
 inline int R(int x) { return (x << 1) + 2; }
 inline int Mid(int s, int e) { return s + (e - s) / 2; }
@@ -47,7 +121,8 @@ void push_down(int cur, int s, int e) {
   if(st[cur].delta != 0) {
     st[cur].val += st[cur].delta;
     if(s != e) {
-      st[L(cur)].delta = st[R(cur)].delta = st[cur].delta;
+      st[L(cur)].delta += st[cur].delta;
+      st[R(cur)].delta += st[cur].delta;
     }
     st[cur].delta = 0;
   }
@@ -90,31 +165,29 @@ int main()
   sort(arr, arr + n);
   reverse(arr, arr + n);
 
+  // for(int i = 0; i < n; i++) {
+  //   cout << arr[i].l << " " << arr[i].r << " " << arr[i].cost << endl;
+  // }
+
   int ans = INT_MAX;
-  set<Seg> have;
+  int j = n - 1;
 
   for(int i = n - 1; i >= 0; i--) {
     increase(0, 0, m - 2, arr[i].l, arr[i].r - 1, 1);
 
-    while(have.size() > 0) {
-      Seg cur = *have.begin();
+    while(j > i) {
+      Seg cur = arr[j];
       increase(0, 0, m - 2, cur.l, cur.r - 1, -1);
       if(query(0, 0, m - 2, 0, m - 2).val == 0) {
         increase(0, 0, m - 2, cur.l, cur.r - 1, 1);
         break;
       }
-      have.erase(have.begin());
+      j--;
     }
 
     if(query(0, 0, m - 2, 0, m - 2).val > 0) {
-      if(have.size() > 0) {
-        ans = min(ans, have.begin()->cost - arr[i].cost);
-      } else {
-        ans = 0;
-      }
+      ans = min(ans, arr[j].cost - arr[i].cost);
     }
-
-    have.insert(arr[i]);
   }
 
   cout << ans << endl;
