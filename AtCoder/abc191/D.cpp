@@ -11,7 +11,8 @@ typedef complex<long double> point;
 #define vec(a,b) ((b)-(a))
 #define polar(r,t) ((r)*exp(point(0,(t))))
 #define angle(v) (atan2((v).Y,(v).X))
-#define length(v) ((long double)hypot((v).Y,(v).X))
+exit
+v) ((long double)hypot((v).Y,(v).X))
 #define lengthSqr(v) (dot(v,v))
 #define dot(a,b) ((conj(a)*(b)).real())
 #define cross(a,b) ((conj(a)*(b)).imag())
