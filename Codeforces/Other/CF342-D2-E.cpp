@@ -66,13 +66,13 @@ void add_node(int u) {
   dfs_num++;
 }
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   add_node(u);
   st[u] = dfs_num - 1;
   for(int v : g[u]){
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
       add_node(u);
     }
   }
@@ -123,7 +123,7 @@ int main()
     g[v].pb(u);
   }
   lev[0] = 0;
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   centroid_decomp();
   for(int i = 0 ; i < n ; i++)
     ans[i] = INF;

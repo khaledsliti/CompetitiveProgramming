@@ -18,7 +18,7 @@ int sub[N], ok[N], par[N];
 map<int, int> cnt[N];
 int col[N];
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   anc[u][0] = p;
   for(int j = 1 ; (1 << j) < n ; j++)
     anc[u][j] = ~anc[u][j - 1] ? anc[anc[u][j - 1]][j - 1] : -1;
@@ -26,7 +26,7 @@ void dfs_lca(int u, int p) {
     int v = g[u][i];
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
 }
@@ -123,7 +123,7 @@ int main()
     g[b].pb(a);
   }
   lev[0] = 0;
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   centroid_decomp();
   // for(int i = 0 ; i < n ; i++)
   //   cout << i + 1 << " " << par[i] + 1 << endl;

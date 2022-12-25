@@ -14,7 +14,7 @@ int val[N];
 int anc[N][L], lev[N];
 int incr[N], decr[N];
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   anc[u][0] = p;
   for(int j = 1 ; (1 << j) < n ; j++)
     anc[u][j] = ~anc[u][j - 1] ? anc[anc[u][j - 1]][j - 1] : -1;
@@ -24,7 +24,7 @@ void dfs_lca(int u, int p) {
       lev[v] = 1 + lev[u];
       incr[v] = val[v] < val[u] ? incr[u] : v;
       decr[v] = val[v] > val[u] ? decr[u] : v;
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
 }
@@ -72,7 +72,7 @@ void solve() {
   }
   incr[0] = decr[0] = 0;
   lev[0] = 0;
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   while(q--) {
     int u, v;
     scanf("%d%d", &u, &v);

@@ -55,13 +55,13 @@ void build_tree() {
         tr[comp[i]].pb(comp[j]);
 }
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   par[u][0] = p;
   sum[u] = val[u] + (p >= 0 ? sum[p] : 0);
   for(int v : tr[u]) {
     if(v != p) {
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
 }
@@ -70,7 +70,7 @@ void pre_lca() {
   for(int i = 0 ; i < ncomp ; i++)
     for(int j = 0 ; (1 << j) < ncomp ; j++)
       par[i][j] = -1;
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   for(int j = 1 ; (1 << j) < ncomp ; j++)
     for(int i = 0 ; i < ncomp ; i++)
       if(par[i][j - 1] != -1)

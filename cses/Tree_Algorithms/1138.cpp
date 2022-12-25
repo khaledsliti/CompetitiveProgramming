@@ -83,13 +83,13 @@ int chainHead[N], chainPos[N] , chainInd[N] , chainSize[N];
 vector<vector<int>> chain;
 segmentTree<Node> chainData[N];
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   par[u] = p;
   subsz[u] = 1;
   for(int v: g[u]) {
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
       subsz[u] += subsz[v];
     }
   }
@@ -132,7 +132,7 @@ int main()
     g[a].pb(b);
     g[b].pb(a);
   }
-  dfs_lca(0, -1);
+  dfs1(0, -1);
 
   memset(chainHead, -1, n * sizeof(chainHead[0]));
   hld(0, -1);

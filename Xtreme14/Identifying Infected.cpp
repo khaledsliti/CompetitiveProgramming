@@ -49,7 +49,7 @@ void dfs(int u, int p) {
   }
 }
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   idx[u] = 1;
   anc[u][0] = p;
   for(int j = 1 ; (1 << j) < n ; j++)
@@ -58,7 +58,7 @@ void dfs_lca(int u, int p) {
     int v = g[u][i];
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
 }
@@ -125,7 +125,7 @@ int main()
   memset(idx, -1, sizeof idx);
   for(int i = 0; i < n; i++) {
     lev[i] = 0;
-    dfs_lca(i, -1);
+    dfs1(i, -1);
   }
   
   int q;
