@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define pb push_back
+#define mp make_pair
+#define endl '\n'
+#define D(x) cerr << #x << " = " << (x) << '\n'
+#define sz(x) ((int)(x).size())
+#define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+typedef long long ll;
+
+void solve() {
+  int n;
+  cin >> n;
+  map<int, int> arr;
+  for(int i = 0; i < n; i++) {
+    int a;
+    cin >> a;
+    arr[a]++;
+  }
+  while(sz(arr) > 1 || arr.begin()->second > 1) {
+    map<int, int> tmp;
+    int prv = -1;
+    for(auto it = arr.begin(); it != arr.end(); it++) {
+      int cur = it->first;
+      tmp[0] += it->second - 1;
+      if(prv != -1) {
+        tmp[it->first - prv] += 1;
+      }
+      prv = it->first;
+    }
+    arr.clear();
+    for(auto it: tmp) {
+      assert(it.first >= 0);
+      if(it.second) {
+        arr.insert(it);
+      }
+    }
+  }
+  cout << arr.begin()->first << endl;
+}
+
+int main()
+{
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+
+  int T;
+  cin >> T;
+  while(T--) {
+    solve();
+  }
+  return 0;
+}
