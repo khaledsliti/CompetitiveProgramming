@@ -104,7 +104,7 @@ void init() {
   }
 }
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   st[u] = cur_idx++;
   anc[u][0] = p;
   for(int j = 1 ; (1 << j) < n ; j++)
@@ -115,7 +115,7 @@ void dfs_lca(int u, int p) {
     int v = g[u][i];
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
   en[u] = cur_idx - 1;
@@ -193,7 +193,7 @@ void solve() {
   for(int i = 0; i < n ; i++) {
     scanf("%d", A + i);
   }
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   ans = 0;
   for(int i = 0; i < n ; i++) {
     add_color(i, C[i]);

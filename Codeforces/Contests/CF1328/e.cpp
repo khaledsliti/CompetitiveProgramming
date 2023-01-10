@@ -15,13 +15,13 @@ int n, q;
 vector<int> g[N];
 int par[N][L], lev[N];
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   par[u][0] = p;
   for(int i = 0 ; i < (int)g[u].size() ; i++){
     int v = g[u][i];
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
 }
@@ -32,7 +32,7 @@ void pre_lca()
     for(int j = 0 ; (1 << j) < n ; j++)
       par[i][j] = -1;
   lev[0] = 0;
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   for(int j = 1 ; (1 << j) < n ; j++)
     for(int i = 0 ; i < n ; i++)
       if(par[i][j - 1] != -1)

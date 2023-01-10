@@ -16,7 +16,7 @@ int n;
 vector<int> g[N];
 int anc[N][L], lev[N];
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   anc[u][0] = p;
   for(int j = 1 ; (1 << j) < n ; j++)
     anc[u][j] = ~anc[u][j - 1] ? anc[anc[u][j - 1]][j - 1] : -1;
@@ -24,7 +24,7 @@ void dfs_lca(int u, int p) {
     int v = g[u][i];
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
 }
@@ -61,7 +61,7 @@ int main()
     g[--a].pb(--b);
     g[b].pb(a);
   }
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   while(q--) {
     int a, b;
     cin >> a >> b;

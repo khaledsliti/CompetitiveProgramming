@@ -166,7 +166,7 @@ int cur_ans;
 bool in[N];
 int cnt[V];
 
-void dfs_lca(int u, int p) {
+void dfs1(int u, int p) {
   st[u] = cur_id;
   id[cur_id++] = u;
   anc[u][0] = p;
@@ -176,7 +176,7 @@ void dfs_lca(int u, int p) {
     int v = g[u][i];
     if(v != p){
       lev[v] = 1 + lev[u];
-      dfs_lca(v, u);
+      dfs1(v, u);
     }
   }
   en[u] = cur_id;
@@ -244,7 +244,7 @@ void solve() {
   for(int i = 0 ; i < n ; i++)
     IO::read_int(val[i]);
   cur_id = 0;
-  dfs_lca(0, -1);
+  dfs1(0, -1);
   IO::read_int(q);
   for(int i = 0 ; i < q ; i++) {
     int u, v;

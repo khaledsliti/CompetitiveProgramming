@@ -15,7 +15,7 @@ const ll Mod = 4294967296LL;
 ll get_hash(string s) {
   cout << s << endl;
   ll r = 0, a = 1;
-  for(int i = sz(s) - 1; i >= 0; i--) {
+  for (int i = sz(s) - 1; i >= 0; i--) {
     r += s[i] * a % Mod;
     r %= Mod;
     a = a * 31 % Mod;
@@ -23,8 +23,7 @@ ll get_hash(string s) {
   return r;
 }
 
-int main()
-{
+int main() {
   cout << char(62) << endl;
   string s = "Coolh4cker0780578>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
   cout << get_hash(s) << endl;
