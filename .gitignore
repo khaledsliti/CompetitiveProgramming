@@ -3,6 +3,7 @@
 
 # Unignore good extensions
 !*.cpp
+!*.go
 !*.c
 !*.java
 !*.py
